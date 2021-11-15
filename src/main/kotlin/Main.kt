@@ -1,6 +1,6 @@
 class Modulo(val numAlumnos: Int = 20) {
     var alumnos = arrayOfNulls<Alumno?>(numAlumnos)
-    var notas = Array(4) { FloatArray(numAlumnos)}
+    var notas = Array(4) { FloatArray(numAlumnos) }
 
     companion object {
         const val EV_PRIMER = "0"
@@ -8,6 +8,47 @@ class Modulo(val numAlumnos: Int = 20) {
         const val EV_TERCERA = "2"
         const val EV_FINAL = "3"
     }
+
+    fun establecerNota(idAlumno: String, evaluacion: String, nota: Float): Boolean {
+        notas[evaluacion.toInt()][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] = nota
+        return true
+    }
+
+    fun calculaEvaluacionFinal(idAlumno: String) {
+        var evFinal =
+            notas[0][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] + notas[1][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] + notas[2][alumnos.indexOfFirst { it?.idAlumno == idAlumno }]
+        evFinal /= 3
+        notas[3][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] = evFinal
+
+    }
+
+    fun listaNotas(evaluacion: String): List<Pair> {}
+    fun numeroAprobados(evaluacion: String): Int {
+        return notas[evaluacion.toInt()].count() { it > 4.99 }
+    }
+
+    fun notaMasBaja(evaluacion: String): Float {
+
+    }
+
+    fun notaMasAlta(evaluacion: String): Float {
+        return
+    }
+
+    fun notaMedia(evaluacion: String): Float {}
+    fun hayAlumnosConDiez(evaluacion: String): Boolean {
+        return notas[evaluacion.toInt()].any { it == 10.0F }
+    }
+
+    fun hayAlumnosAprobados(evaluacion: String): Boolean {
+        return notas[evaluacion.toInt()].any { it >= 5.0F }
+    }
+
+    fun primeraNotaNoAprobada(evaluacion: String): Float {
+        return notas[evaluacion.toInt()][notas[evaluacion.toInt()].indexOfFirst { (it < 5.0F) && (it >= 0.0F) }]
+    }
+
+    fun listaNotasOrdenados(evaluacion: String): List<Pair> {}
 
     var contador = 0
     fun matricularAlumno(alumno: Alumno): Boolean {
@@ -28,16 +69,10 @@ class Modulo(val numAlumnos: Int = 20) {
         return false
     }
 
-    fun establecerNota(idAlumno: String, evaluacion: String, nota: Float) {
-        notas[evaluacion.toInt()][nota.toInt()]
-    }
-
 
 }
 
-class Alumno(val idAlumno: String, val nombre: String, val apellido1: String, val apellido2: String) {
-
-}
+data class Alumno(val idAlumno: String, val nombre: String, val apellido1: String, val apellido2: String)
 
 fun main() {
     val programacion = Modulo(15)
@@ -63,7 +98,7 @@ fun main() {
     programacion.matricularAlumno(alumno9)
     programacion.matricularAlumno(alumno10)
 
-    programacion.establecerNota("A123","0",5.0F)
+    programacion.establecerNota("A123", "0", 5.0F)
 
 
     println(3)
