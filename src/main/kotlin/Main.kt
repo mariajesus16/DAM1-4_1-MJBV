@@ -22,20 +22,24 @@ class Modulo(val numAlumnos: Int = 20) {
 
     }
 
-    fun listaNotas(evaluacion: String): List<Pair> {}
+    fun listaNotas(evaluacion: String): List<Pair<String,Float>> {
+
+    }
     fun numeroAprobados(evaluacion: String): Int {
         return notas[evaluacion.toInt()].count() { it > 4.99 }
     }
 
     fun notaMasBaja(evaluacion: String): Float {
-
+        return notas[evaluacion.toInt()].filter { it > 0.0F }.minOrNull() ?: (-1.0F)
     }
 
     fun notaMasAlta(evaluacion: String): Float {
-        return
+        return notas[evaluacion.toInt()].filter { it > 0.0F }.maxOrNull() ?: (-1.0F)
     }
 
-    fun notaMedia(evaluacion: String): Float {}
+    fun notaMedia(evaluacion: String): Float {
+        return
+    }
     fun hayAlumnosConDiez(evaluacion: String): Boolean {
         return notas[evaluacion.toInt()].any { it == 10.0F }
     }
@@ -48,7 +52,10 @@ class Modulo(val numAlumnos: Int = 20) {
         return notas[evaluacion.toInt()][notas[evaluacion.toInt()].indexOfFirst { (it < 5.0F) && (it >= 0.0F) }]
     }
 
-    fun listaNotasOrdenados(evaluacion: String): List<Pair> {}
+
+    fun listaNotasOrdenados(evaluacion: String): List<Pair<String,Float>> {
+        return listaNotas(evaluacion).sortedBy { it.second }
+    }
 
     var contador = 0
     fun matricularAlumno(alumno: Alumno): Boolean {
@@ -100,6 +107,4 @@ fun main() {
 
     programacion.establecerNota("A123", "0", 5.0F)
 
-
-    println(3)
 }
