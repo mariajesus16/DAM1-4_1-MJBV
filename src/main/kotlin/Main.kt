@@ -22,9 +22,17 @@ class Modulo(val numAlumnos: Int = 20) {
 
     }
 
-    fun listaNotas(evaluacion: String): List<Pair<String,Float>> {
+    fun listaNotas(evaluacion: String): List<Pair<Alumno, Float>> {
+        val listaNotas: MutableList<Pair<Alumno, Float>> = mutableListOf()
+        if (evaluacion == "0" || evaluacion == "1" || evaluacion == "2" || evaluacion == "3") {
+            for (i in 0 until this.numAlumnos) {
+                if (alumnos[i] != null) listaNotas.add(Pair(alumnos[i]!!, notas[evaluacion.toInt()][i]))
+            }
+        }
+        return listaNotas
 
     }
+
     fun numeroAprobados(evaluacion: String): Int {
         return notas[evaluacion.toInt()].count() { it > 4.99 }
     }
@@ -38,8 +46,20 @@ class Modulo(val numAlumnos: Int = 20) {
     }
 
     fun notaMedia(evaluacion: String): Float {
-        return
+        var media = 0.0F
+        var alumnosCalificados = 0
+        if (evaluacion == "0" || evaluacion == "1" || evaluacion == "2" || evaluacion == "3") {
+            for (i in alumnos.indices) {
+                if (notas[evaluacion.toInt()][i] > 0.0F) {
+                    media += notas[evaluacion.toInt()][i]
+                    alumnosCalificados++
+                }
+            }
+        }
+        media /= alumnosCalificados
+        return media
     }
+
     fun hayAlumnosConDiez(evaluacion: String): Boolean {
         return notas[evaluacion.toInt()].any { it == 10.0F }
     }
@@ -53,7 +73,7 @@ class Modulo(val numAlumnos: Int = 20) {
     }
 
 
-    fun listaNotasOrdenados(evaluacion: String): List<Pair<String,Float>> {
+    fun listaNotasOrdenados(evaluacion: String): List<Pair<Alumno, Float>> {
         return listaNotas(evaluacion).sortedBy { it.second }
     }
 
@@ -105,6 +125,26 @@ fun main() {
     programacion.matricularAlumno(alumno9)
     programacion.matricularAlumno(alumno10)
 
-    programacion.establecerNota("A123", "0", 5.0F)
+    programacion.establecerNota("A123", "0", 4.0F)
+    programacion.establecerNota("A123", "1", 7.0F)
+    programacion.establecerNota("B456", "0", 9.5F)
+    programacion.establecerNota("B456", "1", 5.0F)
+    programacion.establecerNota("B456", "2", 10.0F)
+
+    programacion.calculaEvaluacionFinal("A123")
+    programacion.calculaEvaluacionFinal("B456")
+
+    println("La primera nota suspensa encontrada es un ${programacion.primeraNotaNoAprobada("0")}")
+    println("En la primera evaluación hay ${programacion.numeroAprobados("0")} alumnos aprobados.")
+    println("La nota más baja de la segunda evaluación es un ${programacion.notaMasBaja("1")}")
+    println("La nota más alta de la primera evaluación es un ${programacion.notaMasAlta("0")}")
+    println("La nota media de la primera evaluación es un ${programacion.notaMedia("0")}")
+    repeat(80) { print("*") }
+    println()
+    println("La lista de notas de la segunda evaluación es:")
+    println(programacion.listaNotasOrdenados("1"))
+    repeat(80) { print("*") }
+    println()
+
 
 }
