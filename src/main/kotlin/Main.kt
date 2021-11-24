@@ -1,6 +1,6 @@
 class Modulo(val numAlumnos: Int = 20) {
     var alumnos = arrayOfNulls<Alumno?>(numAlumnos)
-    var notas = Array(4) { FloatArray(numAlumnos) }
+    var evaluaciones = Array(4) { FloatArray(numAlumnos) }
 
     companion object {
         const val EV_PRIMER = "0"
@@ -10,15 +10,15 @@ class Modulo(val numAlumnos: Int = 20) {
     }
 
     fun establecerNota(idAlumno: String, evaluacion: String, nota: Float): Boolean {
-        notas[evaluacion.toInt()][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] = nota
+        evaluaciones[evaluacion.toInt()][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] = nota
         return true
     }
 
     fun calculaEvaluacionFinal(idAlumno: String) {
         var evFinal =
-            notas[0][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] + notas[1][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] + notas[2][alumnos.indexOfFirst { it?.idAlumno == idAlumno }]
+            evaluaciones[0][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] + evaluaciones[1][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] + evaluaciones[2][alumnos.indexOfFirst { it?.idAlumno == idAlumno }]
         evFinal /= 3
-        notas[3][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] = evFinal
+        evaluaciones[3][alumnos.indexOfFirst { it?.idAlumno == idAlumno }] = evFinal
 
     }
 
@@ -26,7 +26,7 @@ class Modulo(val numAlumnos: Int = 20) {
         val listaNotas: MutableList<Pair<Alumno, Float>> = mutableListOf()
         if (evaluacion == "0" || evaluacion == "1" || evaluacion == "2" || evaluacion == "3") {
             for (i in 0 until this.numAlumnos) {
-                if (alumnos[i] != null) listaNotas.add(Pair(alumnos[i]!!, notas[evaluacion.toInt()][i]))
+                if (alumnos[i] != null) listaNotas.add(Pair(alumnos[i]!!, evaluaciones[evaluacion.toInt()][i]))
             }
         }
         return listaNotas
@@ -34,15 +34,15 @@ class Modulo(val numAlumnos: Int = 20) {
     }
 
     fun numeroAprobados(evaluacion: String): Int {
-        return notas[evaluacion.toInt()].count() { it > 4.99 }
+        return evaluaciones[evaluacion.toInt()].count() { it > 4.99 }
     }
 
     fun notaMasBaja(evaluacion: String): Float {
-        return notas[evaluacion.toInt()].filter { it > 0.0F }.minOrNull() ?: (-1.0F)
+        return evaluaciones[evaluacion.toInt()].filter { it > 0.0F }.minOrNull() ?: (-1.0F)
     }
 
     fun notaMasAlta(evaluacion: String): Float {
-        return notas[evaluacion.toInt()].filter { it > 0.0F }.maxOrNull() ?: (-1.0F)
+        return evaluaciones[evaluacion.toInt()].filter { it > 0.0F }.maxOrNull() ?: (-1.0F)
     }
 
     fun notaMedia(evaluacion: String): Float {
@@ -50,8 +50,8 @@ class Modulo(val numAlumnos: Int = 20) {
         var alumnosCalificados = 0
         if (evaluacion == "0" || evaluacion == "1" || evaluacion == "2" || evaluacion == "3") {
             for (i in alumnos.indices) {
-                if (notas[evaluacion.toInt()][i] > 0.0F) {
-                    media += notas[evaluacion.toInt()][i]
+                if (evaluaciones[evaluacion.toInt()][i] > 0.0F) {
+                    media += evaluaciones[evaluacion.toInt()][i]
                     alumnosCalificados++
                 }
             }
@@ -61,15 +61,15 @@ class Modulo(val numAlumnos: Int = 20) {
     }
 
     fun hayAlumnosConDiez(evaluacion: String): Boolean {
-        return notas[evaluacion.toInt()].any { it == 10.0F }
+        return evaluaciones[evaluacion.toInt()].any { it == 10.0F }
     }
 
     fun hayAlumnosAprobados(evaluacion: String): Boolean {
-        return notas[evaluacion.toInt()].any { it >= 5.0F }
+        return evaluaciones[evaluacion.toInt()].any { it >= 5.0F }
     }
 
     fun primeraNotaNoAprobada(evaluacion: String): Float {
-        return notas[evaluacion.toInt()][notas[evaluacion.toInt()].indexOfFirst { (it < 5.0F) && (it >= 0.0F) }]
+        return evaluaciones[evaluacion.toInt()][evaluaciones[evaluacion.toInt()].indexOfFirst { (it < 5.0F) && (it >= 0.0F) }]
     }
 
 
