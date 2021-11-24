@@ -112,7 +112,7 @@ fun main() {
     val alumno7 = Alumno("G159", "Pablo", "Rodriguez", "Martinez")
     val alumno8 = Alumno("H753", "Lola", "Gómez", "Borrego")
     val alumno9 = Alumno("I486", "Isabel", "Torres", "Chacón")
-    val alumno10 = Alumno("J759", "Marina", "Pavón", "Rodriguez")
+    val alumno10 = Alumno("J759", "Marina", "Perez", "Rodriguez")
 
     programacion.matricularAlumno(alumno1)
     programacion.matricularAlumno(alumno2)
